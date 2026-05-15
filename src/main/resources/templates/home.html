@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Home')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<aside th:replace="~{fragments/layout :: cartDrawer}"></aside>
+<nav th:replace="~{fragments/layout :: mobileBottomNav}"></nav>
+<div th:replace="~{fragments/layout :: toast}"></div>
+
+<main>
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content reveal">
+            <span class="eyebrow">Smart canteen ordering for students</span>
+            <h1><span>Student</span><span>Bites</span></h1>
+            <div class="hero-actions">
+                <a class="btn primary" th:href="@{/menu}">
+                    <span class="material-symbols-rounded">restaurant_menu</span>
+                    Explore Menu
+                </a>
+                <a class="btn glass" th:href="@{/track}">
+                    <span class="material-symbols-rounded">receipt_long</span>
+                    Track Order
+                </a>
+            </div>
+            <div class="student-home-panel reveal" th:if="${currentUserName != null}">
+                <div class="student-home-head">
+                    <span class="student-avatar large" th:text="${#strings.substring(currentUserName,0,1)}">S</span>
+                    <div>
+                        <span>Welcome back</span>
+                        <strong th:text="${currentUserName}">Student</strong>
+                    </div>
+                </div>
+                <div class="student-home-grid">
+                    <a th:href="@{/cart}">
+                        <span class="material-symbols-rounded">shopping_bag</span>
+                        <b th:text="${cartCount}">0</b>
+                        <small>cart items</small>
+                    </a>
+                    <a th:href="@{/track}">
+                        <span class="material-symbols-rounded">receipt_long</span>
+                        <b th:text="${myOrderCount}">0</b>
+                        <small>orders</small>
+                    </a>
+                    <a th:href="@{/menu}">
+                        <span class="material-symbols-rounded">restaurant_menu</span>
+                        <b>Menu</b>
+                        <small>browse food</small>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div><b>25 min</b><span>avg fulfilment</span></div>
+                <div><b th:text="${cartCount}">0</b><span>cart items</span></div>
+                <div><b>4.8</b><span>student rating</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-strip category-studio" data-category-studio>
+        <div class="section-heading">
+            <span>Popular Categories</span>
+            <h2>Build your campus food mood</h2>
+            <p>Tap a craving to remix the preview before opening the menu.</p>
+        </div>
+        <div class="studio-layout">
+            <div class="category-row studio-tabs" aria-label="Choose food mood">
+                <button class="category-chip active" type="button" data-studio-category="south">
+                    <span class="material-symbols-rounded">local_dining</span>
+                    South Indian
+                </button>
+                <button class="category-chip" type="button" data-studio-category="pizza">
+                    <span class="material-symbols-rounded">local_pizza</span>
+                    Pizza
+                </button>
+                <button class="category-chip" type="button" data-studio-category="meals">
+                    <span class="material-symbols-rounded">rice_bowl</span>
+                    Meals
+                </button>
+                <button class="category-chip" type="button" data-studio-category="snacks">
+                    <span class="material-symbols-rounded">ramen_dining</span>
+                    Snacks
+                </button>
+                <button class="category-chip" type="button" data-studio-category="beverages">
+                    <span class="material-symbols-rounded">local_cafe</span>
+                    Beverages
+                </button>
+                <button class="category-chip" type="button" data-studio-category="desserts">
+                    <span class="material-symbols-rounded">icecream</span>
+                    Desserts
+                </button>
+            </div>
+            <article class="studio-card reveal">
+                <div class="studio-photo">
+                    <img data-studio-image th:src="@{/images/menu-photos/masala-dosa.png}" alt="Campus Masala Dosa">
+                    <span class="studio-float one">Fresh</span>
+                    <span class="studio-float two">4.8 rated</span>
+                </div>
+                <div class="studio-copy">
+                    <span class="eyebrow" data-studio-label>South Indian</span>
+                    <h3 data-studio-title>Crispy comfort between classes</h3>
+                    <p data-studio-text>Dosa, idli and sambar picks for quick breakfast breaks and light lunch plans.</p>
+                    <div class="studio-metrics">
+                        <span><b data-studio-time>9-12 min</b><small>pickup</small></span>
+                        <span><b data-studio-rating>4.8</b><small>rating</small></span>
+                        <span><b data-studio-price>from Rs. 79</b><small>student price</small></span>
+                    </div>
+                    <a class="btn primary" data-studio-link th:href="@{/menu(category=${T(com.studentbites.model.FoodCategory).SOUTH_INDIAN})}">
+                        <span class="material-symbols-rounded">restaurant_menu</span>
+                        Explore This Mood
+                    </a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="smart-pick-section">
+        <div class="smart-pick-copy reveal">
+            <span class="eyebrow">Smart pick</span>
+            <h2>Not sure what to eat?</h2>
+            <p>Pick a mood and let StudentBites suggest a quick meal before you open the full menu.</p>
+        </div>
+        <div class="hero-order-card craving-widget reveal" data-craving-widget>
+            <div class="craving-top">
+                <span class="material-symbols-rounded">auto_awesome</span>
+                <span>Smart pick</span>
+            </div>
+            <h2>Find your campus craving</h2>
+            <p>Tap a mood and get a quick recommendation from the student menu.</p>
+            <div class="craving-preview">
+                <div>
+                    <small>Recommended</small>
+                    <strong data-craving-title>Paneer Tikka Bowl</strong>
+                    <span data-craving-meta>Rs. 159 / 15 min / 4.9 rating</span>
+                </div>
+                <a class="icon-btn" th:href="@{/menu}" aria-label="Open menu">
+                    <span class="material-symbols-rounded">arrow_forward</span>
+                </a>
+            </div>
+            <div class="craving-options" aria-label="Choose craving">
+                <button class="active" type="button" data-craving="spicy">Spicy</button>
+                <button type="button" data-craving="budget">Budget</button>
+                <button type="button" data-craving="group">Group</button>
+                <button type="button" data-craving="sweet">Sweet</button>
+            </div>
+            <div class="match-copy">
+                <span>Student match</span>
+                <b data-craving-score>96%</b>
+            </div>
+            <div class="match-meter"><span data-craving-meter style="width: 96%"></span></div>
+        </div>
+    </section>
+
+    <section class="food-story-section">
+        <div class="story-plate reveal">
+            <img th:src="@{/images/menu-photos/paneer-bowl.png}" alt="Paneer Tikka Bowl">
+            <div class="story-plate-card">
+                <span class="material-symbols-rounded">auto_awesome</span>
+                <b>Campus favourite</b>
+                <small>Paneer bowls, pizzas and fast snacks picked for student breaks.</small>
+            </div>
+        </div>
+        <div class="story-copy reveal">
+            <span class="eyebrow">Fresh from the canteen</span>
+            <h2>Food that feels ready for your day</h2>
+            <p>Browse colourful meals, quick snacks and desserts with a smoother app-like ordering experience.</p>
+            <div class="story-mini-grid">
+                <a th:href="@{/menu(category=${T(com.studentbites.model.FoodCategory).MEALS})}">
+                    <img th:src="@{/images/menu-photos/rajma-chawal.png}" alt="Rajma Rice Meal">
+                    <span>Meals</span>
+                </a>
+                <a th:href="@{/menu(category=${T(com.studentbites.model.FoodCategory).SNACKS})}">
+                    <img th:src="@{/images/menu-photos/maggi-noodles.png}" alt="Maggi Tadka Bowl">
+                    <span>Snacks</span>
+                </a>
+                <a th:href="@{/menu(category=${T(com.studentbites.model.FoodCategory).DESSERTS})}">
+                    <img th:src="@{/images/menu-photos/chocolate-waffle.png}" alt="Chocolate Waffle">
+                    <span>Desserts</span>
+                </a>
+            </div>
+            <div class="story-actions">
+                <a class="btn primary" th:href="@{/menu}">
+                    <span class="material-symbols-rounded">restaurant_menu</span>
+                    Explore Menu
+                </a>
+                <a class="btn dark" th:href="@{/track}">
+                    <span class="material-symbols-rounded">receipt_long</span>
+                    Track Order
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-heading">
+            <span>Campus favourites</span>
+            <h2>Hot picks students keep ordering</h2>
+        </div>
+        <div class="food-grid">
+            <article th:each="item : ${featuredItems}" class="food-card reveal">
+                <div class="food-image-wrap">
+                    <img th:src="${item.imageUrl}" th:alt="${item.name}">
+                    <span class="food-fallback"><span class="material-symbols-rounded">restaurant</span></span>
+                </div>
+                <div class="food-body">
+                    <div class="food-title">
+                        <h3 th:text="${item.name}">Food</h3>
+                        <span class="rating"><span class="material-symbols-rounded">star</span><b th:text="${item.rating}">4.8</b></span>
+                    </div>
+                    <p th:text="${item.description}">Description</p>
+                    <div class="food-meta">
+                        <span th:text="${item.prepTime}">12 min</span>
+                        <span th:text="${item.vegetarian ? 'Veg' : 'Chef special'}">Veg</span>
+                    </div>
+                    <div class="food-actions">
+                        <strong th:text="'Rs. ' + ${item.price}">Rs. 99</strong>
+                        <form th:action="@{/cart/add/{id}(id=${item.id})}" method="post">
+                            <button class="icon-btn" type="submit" aria-label="Add item">
+                                <span class="material-symbols-rounded">add_shopping_cart</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="split-band">
+        <div class="section-heading">
+            <span>Why it fits campus life</span>
+            <h2>Everything students need between classes</h2>
+        </div>
+        <div class="feature-grid">
+            <div class="feature"><span class="material-symbols-rounded">bolt</span><h3>Quick cart</h3><p>Session-based cart with live quantity updates.</p></div>
+            <div class="feature"><span class="material-symbols-rounded">receipt_long</span><h3>Order tracking</h3><p>Students can check invoice status from pending to delivered.</p></div>
+            <div class="feature"><span class="material-symbols-rounded">account_circle</span><h3>Student account</h3><p>Logged-in students get their own cart and order history.</p></div>
+            <div class="feature"><span class="material-symbols-rounded">payments</span><h3>Payment choice</h3><p>UPI, card, cash and meal-pass checkout options.</p></div>
+        </div>
+    </section>
+
+    <section class="buzz-section">
+        <div class="buzz-score reveal">
+            <span class="eyebrow">Campus buzz</span>
+            <strong>4.8</strong>
+            <div class="stars">★★★★★</div>
+            <p>Students rate StudentBites for fast pickup, simple tracking and pocket-friendly food.</p>
+        </div>
+        <div class="buzz-wall">
+            <article th:each="review, stat : ${reviews}" class="review-card reveal" th:classappend="${stat.index == 0} ? 'featured-review'">
+                <div class="review-avatar" th:text="${#strings.substring(review.studentName,0,1)}">A</div>
+                <div>
+                    <div class="stars" th:text="${'★'.repeat(review.rating)}">★★★★★</div>
+                    <p th:text="${review.comment}">Review</p>
+                    <strong th:text="${review.studentName}">Name</strong>
+                    <span th:text="${review.course}">Course</span>
+                </div>
+            </article>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:replace="~{fragments/layout :: scripts}"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Menu')}"></head>
+<body>
+<nav th:replace="~{fragments/layout :: navbar}"></nav>
+<aside th:replace="~{fragments/layout :: cartDrawer}"></aside>
+<nav th:replace="~{fragments/layout :: mobileBottomNav}"></nav>
+<div th:replace="~{fragments/layout :: toast}"></div>
+
+<main class="page-shell">
+    <section class="page-header menu-header">
+        <span class="eyebrow">Order food</span>
+        <h1>Explore campus favourites</h1>
+        <p>Search, sort and build your food bag for pickup, dine-in or hostel delivery.</p>
+    </section>
+
+    <form class="menu-search" th:action="@{/menu}" method="get">
+        <input type="hidden" name="category" th:if="${selectedCategory != null}" th:value="${selectedCategory}">
+        <label>
+            <span class="material-symbols-rounded">search</span>
+            <input name="q" th:value="${query}" placeholder="Search Maggi, pizza, chai, biryani...">
+        </label>
+        <select name="sort" aria-label="Sort menu">
+            <option value="popular" th:selected="${sort == 'popular'}">Popular first</option>
+            <option value="rating" th:selected="${sort == 'rating'}">Top rated</option>
+            <option value="price-low" th:selected="${sort == 'price-low'}">Price low to high</option>
+            <option value="price-high" th:selected="${sort == 'price-high'}">Price high to low</option>
+        </select>
+        <button class="btn primary" type="submit">
+            <span class="material-symbols-rounded">tune</span>
+            Apply
+        </button>
+    </form>
+
+    <div class="toolbar">
+        <a class="category-chip" th:classappend="${selectedCategory == null} ? 'active'" th:href="@{/menu(q=${query},sort=${sort})}">All</a>
+        <a th:each="category : ${categories}" class="category-chip" th:classappend="${selectedCategory == category} ? 'active'" th:href="@{/menu(category=${category},q=${query},sort=${sort})}" th:text="${category.label}">Category</a>
+    </div>
+
+    <section class="food-grid menu-grid">
+        <article th:each="item : ${items}" class="food-card reveal">
+            <div class="food-image-wrap">
+                <img th:src="${item.imageUrl}" th:alt="${item.name}">
+                <span class="food-fallback"><span class="material-symbols-rounded">restaurant</span></span>
+            </div>
+            <div class="food-body">
+                <div class="food-title">
+                    <h3 th:text="${item.name}">Food</h3>
+                    <span class="rating"><span class="material-symbols-rounded">star</span><b th:text="${item.rating}">4.8</b></span>
+                </div>
+                <p th:text="${item.description}">Description</p>
+                <div class="food-meta">
+                    <span th:text="${item.category.label}">Category</span>
+                    <span th:text="${item.prepTime}">12 min</span>
+                    <span th:text="${item.vegetarian ? 'Pure veg' : 'Special'}">Veg</span>
+                </div>
+                <div class="food-actions">
+                    <strong th:text="'Rs. ' + ${item.price}">Rs. 99</strong>
+                    <form th:action="@{/cart/add/{id}(id=${item.id})}" method="post">
+                        <button class="btn small" type="submit">
+                            <span class="material-symbols-rounded">add</span>
+                            Add
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </article>
+        <div class="empty-state menu-empty" th:if="${items.isEmpty()}">
+            <span class="material-symbols-rounded">search_off</span>
+            <h2>No food found</h2>
+            <a class="btn primary" th:href="@{/menu}">Reset search</a>
+        </div>
+    </section>
+</main>
+
+<footer th:replace="~{fragments/layout :: footer}"></footer>
+<script th:replace="~{fragments/layout :: scripts}"></script>
+</body>
+</html>
