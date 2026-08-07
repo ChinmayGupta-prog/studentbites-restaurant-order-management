@@ -15,7 +15,7 @@
     <artifactId>restaurant-order-table-management</artifactId>
     <version>1.0.0</version>
     <name>StudentBites</name>
-    <description>Restaurant order and table management system for students</description>
+    <description>Restaurant order management system for students</description>
 
     <properties>
         <java.version>17</java.version>
