@@ -2,7 +2,7 @@
 
 
 
-StudentBites is a Spring Boot based restaurant order and table management system designed for students. It allows users to browse food items, manage cart items, place orders, track orders, and generate invoices through a simple web interface.
+tudentBites is a Spring Boot-based restaurant order management system designed for students. It allows users to browse food items, manage cart items, place orders, track orders, and generate invoices through a simple web interface.
 
 
 
